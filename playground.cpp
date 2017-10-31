@@ -6,8 +6,6 @@
 #include <glfw3.h>
 
 
-int stuff();
-
 int main()
 {
 	// Load GLFW
