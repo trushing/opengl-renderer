@@ -1,29 +1,36 @@
+#include "windowManager.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <glfw3.h>
 
 
-int stuff(GLFWwindow*);
+int stuff();
 
 int main()
 {
+	// Load GLFW
 	if (!glfwInit())
 	{
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		fprintf(stderr, "Could not load GLFW.\n");
 		return -1;
 	}
 
-	//glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+	// Set OpenGL version
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // We don't want the old OpenGL 
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	// Create a window using GLFW and pass it to 
-	GLFWwindow* window;
-	window = glfwCreateWindow(800, 600, "Model Renderer", NULL, NULL);
-	stuff(window);
+	// Create window
+	WindowManager window(800, 600, "Model Renderer");
+	window.setCurrentContext();
 
+	// Main loop
+	while (window.isAlive())
+	{
+		window.update();
+	}
 
 	return 0;
 }
