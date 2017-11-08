@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <vector>
+#include <string>
+#include <iostream>
 
 #include <GL/glew.h>
 #include <glfw3.h>
@@ -53,10 +53,16 @@ int main(void)
 	GLuint Texture = loadDDS("uvmap.DDS");
 	
 	// Load .obj
+	std::string filename;
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
-	bool res = loadOBJ("cube.obj", vertices, uvs, normals);
+
+	std::cout << "File name: ";
+	std::cin >> filename;
+	std::cout << std::endl;
+
+	loadOBJ(filename.c_str(), vertices, uvs, normals);
 
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
@@ -114,6 +120,27 @@ int main(void)
 			glfwDestroyWindow(window);
 			window = NULL;
 			glfwTerminate();
+		}
+
+		// Load new model if G is pressed
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+		{
+			std::cout << "File name: ";
+			std::cin >> filename;
+			std::cout << std::endl;
+
+			vertices.clear();
+			uvs.clear();
+
+			loadOBJ(filename.c_str(), vertices, uvs, normals);
+
+			glGenBuffers(1, &vertexbuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
+
+			glGenBuffers(1, &uvbuffer);
+			glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+			glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 		}
 	}
 

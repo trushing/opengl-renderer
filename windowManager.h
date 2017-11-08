@@ -6,6 +6,7 @@
 class WindowManager
 {
 public:
+	GLFWwindow* window;
 	WindowManager(int _height = 800, int _width = 600, std::string _title = " ");
 	~WindowManager();
 	virtual void windowKeyEvent(int _key, int _scancode, int _actions, int _mods);
@@ -15,7 +16,6 @@ public:
 	bool isAlive();
 
 private:
-	GLFWwindow* window;
 	bool killFlag;
 
 	static void windowKeyEvent(GLFWwindow* _window, int _key, int _scancode, int _actions, int _mods)
