@@ -1,9 +1,13 @@
+#pragma once
+
 #include "windowManager.h"
+#include "loader.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <glfw3.h>
+#include <glm/glm.hpp>
 
 
 int main()
