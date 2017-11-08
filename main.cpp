@@ -11,11 +11,10 @@
 #include "controls.hpp"
 #include "objloader.hpp"
 #include "texture.hpp"
-#include "windowManager.h"
 
 using namespace glm;
 
-//GLFWwindow* window;
+GLFWwindow* window;
 
 int main(void)
 {
@@ -28,10 +27,8 @@ int main(void)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create window and make it the current context
-	//window = glfwCreateWindow(800, 600, "Model Renderer", NULL, NULL);
-	//glfwMakeContextCurrent(window);
-	WindowManager window(800, 600, "Model Renderer");
-	window.setCurrentContext();
+	window = glfwCreateWindow(800, 600, "Model Renderer", NULL, NULL);
+	glfwMakeContextCurrent(window);
 
 	// Start GLEW
 	glewExperimental = true;
@@ -77,10 +74,10 @@ int main(void)
 	glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
 	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &uvs[0], GL_STATIC_DRAW);
 
-	glfwSetCursorPos(window.window, 400, 300);
-	glfwSetInputMode(window.window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	glfwSetCursorPos(window, 400, 300);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-	while (window.window != NULL)
+	while (window != NULL)
 	{
 		// Clear screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -89,7 +86,7 @@ int main(void)
 		glUseProgram(programID);
 
 		// Model View Projection matrix
-		computeMatricesFromInputs(window.window);
+		computeMatricesFromInputs();
 		glm::mat4 ProjectionMatrix = getProjectionMatrix();
 		glm::mat4 ViewMatrix = getViewMatrix();
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
@@ -112,21 +109,21 @@ int main(void)
 		glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
 		// Swap buffers
-		glfwSwapBuffers(window.window);
+		glfwSwapBuffers(window);
 
 		// Check input
 		glfwPollEvents();
 
 		// End program if escape is pressed
-		if (glfwGetKey(window.window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		{
-			glfwDestroyWindow(window.window);
-			window.window = NULL;
+			glfwDestroyWindow(window);
+			window = NULL;
 			glfwTerminate();
 		}
 
 		// Load new model if G is pressed
-		if (glfwGetKey(window.window, GLFW_KEY_G) == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
 		{
 			std::cout << "File name: ";
 			std::cin >> filename;
